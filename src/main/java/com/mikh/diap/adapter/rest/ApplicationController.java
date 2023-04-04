@@ -6,6 +6,8 @@ import com.mikh.diap.adapter.rest.dto.CreateApplicationResponseDto;
 import com.mikh.diap.adapter.rest.dto.UpdateApplicationRequestDto;
 import com.mikh.diap.app.api.inbound.ApplicationService;
 import com.mikh.diap.app.api.inbound.UpdateApplicationRequest;
+import com.mikh.diap.app.exception.ApplicationInformationException;
+import com.mikh.diap.app.exception.ApplicationNotFoundException;
 import com.mikh.diap.domain.HuntingApplication;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -31,7 +33,7 @@ public class ApplicationController {
     @Operation(summary = "Get an application by its id")
     @GetMapping("/{id}")
     public ApplicationResponseDto getApplicationById(@Parameter(description = "id of application to be searched")
-                                                     @PathVariable Long id) {
+                                                     @PathVariable Long id) throws ApplicationNotFoundException {
         HuntingApplication application = service.getApplicationById(id);
         return mapper.toApplicationDto(application);
     }
@@ -40,7 +42,7 @@ public class ApplicationController {
     @PostMapping("/add/{id}")
     public CreateApplicationResponseDto addApplication(@Parameter(description = "id of resource to be requested")
                                                        @PathVariable Long id,
-                                                       @RequestBody CreateApplicationRequestDto createApplicationRequestDto) {
+                                                       @RequestBody CreateApplicationRequestDto createApplicationRequestDto) throws ApplicationInformationException {
         HuntingApplication application = mapper.toApplication(createApplicationRequestDto);
         HuntingApplication addedApplication = service.addApplication(id, application);
         return mapper.toCreateResponseDto(addedApplication);
@@ -50,7 +52,7 @@ public class ApplicationController {
     @PutMapping("/update-by-id/{id}")
     public ApplicationResponseDto updateApplication(@Parameter(description = "id of application to be updated")
                                                     @PathVariable Long id,
-                                                    @RequestBody UpdateApplicationRequestDto updateApplicationRequestDto) {
+                                                    @RequestBody UpdateApplicationRequestDto updateApplicationRequestDto) throws ApplicationNotFoundException {
         UpdateApplicationRequest request = mapper.toUpdateRequest(updateApplicationRequestDto);
         HuntingApplication application = service.updateApplication(id, request);
         return mapper.toApplicationDto(application);

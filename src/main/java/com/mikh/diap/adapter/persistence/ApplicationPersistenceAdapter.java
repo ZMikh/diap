@@ -2,6 +2,7 @@ package com.mikh.diap.adapter.persistence;
 
 import com.mikh.diap.adapter.persistence.jpa.ApplicationJpaRepository;
 import com.mikh.diap.app.api.outbound.ApplicationPersistence;
+import com.mikh.diap.app.exception.ApplicationNotFoundException;
 import com.mikh.diap.domain.HuntingApplication;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -29,7 +30,7 @@ public class ApplicationPersistenceAdapter implements ApplicationPersistence {
     }
 
     @Override
-    public HuntingApplication findById(Long id) {
-        return repository.findById(id).orElseThrow();
+    public HuntingApplication findById(Long id) throws ApplicationNotFoundException {
+        return repository.findById(id).orElseThrow(ApplicationNotFoundException::new);
     }
 }

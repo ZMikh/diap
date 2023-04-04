@@ -1,10 +1,13 @@
 package com.mikh.diap.domain;
 
+import com.mikh.diap.app.exception.ApplicationInformationException;
+import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * Заявка на добычу охотничьих ресурсов
@@ -74,4 +77,53 @@ public class HuntingApplication {
      */
     @ManyToOne(fetch = FetchType.LAZY)
     private HuntingResource resource;
+
+    public void setLastname(String lastname) throws ApplicationInformationException {
+        if (StringUtils.isBlank(lastname)) {
+            throw new ApplicationInformationException();
+        }
+        this.lastname = lastname;
+    }
+
+    public void setFirstname(String firstname) throws ApplicationInformationException {
+        if (StringUtils.isBlank(firstname)) {
+            throw new ApplicationInformationException();
+        }
+        this.firstname = firstname;
+    }
+
+    public void setMiddlename(String middlename) throws ApplicationInformationException {
+        if (StringUtils.isBlank(middlename)) {
+            throw new ApplicationInformationException();
+        }
+        this.middlename = middlename;
+    }
+
+    public void setHuntingLicenseDateOfIssue(LocalDate huntingLicenseDateOfIssue) throws ApplicationInformationException {
+        if (Objects.isNull(huntingLicenseDateOfIssue)) {
+            throw new ApplicationInformationException();
+        }
+        this.huntingLicenseDateOfIssue = huntingLicenseDateOfIssue;
+    }
+
+    public void setHuntingLicenseSeries(String huntingLicenseSeries) throws ApplicationInformationException {
+        if (StringUtils.isBlank(huntingLicenseSeries)) {
+            throw new ApplicationInformationException();
+        }
+        this.huntingLicenseSeries = huntingLicenseSeries;
+    }
+
+    public void setHuntingLicenseNumber(Long huntingLicenseNumber) throws ApplicationInformationException {
+        if (Objects.isNull(huntingLicenseNumber)) {
+            throw new ApplicationInformationException();
+        }
+        this.huntingLicenseNumber = huntingLicenseNumber;
+    }
+
+    public void setCount(Integer count) throws ApplicationInformationException {
+        if (Objects.isNull(count)) {
+            throw new ApplicationInformationException();
+        }
+        this.count = count;
+    }
 }

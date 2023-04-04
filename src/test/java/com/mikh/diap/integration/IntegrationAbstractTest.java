@@ -14,6 +14,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.lifecycle.Startables;
 
@@ -82,5 +83,20 @@ class IntegrationAbstractTest {
                 .andDo(print())
                 .andExpect(status().isOk());
         return objectMapper.readValue(resultActions.andReturn().getResponse().getContentAsString(), response);
+    }
+
+    protected ResultActions performExceptionOnNotFoundApplication(Long id, ResultMatcher resultMatcher) throws Exception {
+        return mockMvc.perform(get(API + "/" + id)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(resultMatcher);
+    }
+
+    protected ResultActions performExceptionOnApplicationCreation(Long id, CreateApplicationRequestDto requestBody, ResultMatcher resultMatcher) throws Exception {
+        return mockMvc.perform(post(API + "/add/" + id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(requestBody)))
+                .andDo(print())
+                .andExpect(resultMatcher);
     }
 }
