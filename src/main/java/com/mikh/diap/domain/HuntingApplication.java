@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Table(name = "application")
+@NamedEntityGraph(name = "Application.resource", attributeNodes = @NamedAttributeNode("resource"))
 public class HuntingApplication {
     /**
      * Идентификатор заявки
@@ -61,11 +62,16 @@ public class HuntingApplication {
      * Количество запрашиваемого ресурса
      */
     @Column(name = "resource_count", nullable = false)
-    private Long count;
+    private Integer count;
     /**
      * Статус рассмотрения заявки
      */
     @Enumerated(EnumType.STRING)
     @Column(name = "state")
     private ApplicationState applicationState;
+    /**
+     * Охотничий ресурс
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    private HuntingResource resource;
 }
