@@ -2,6 +2,7 @@ package com.mikh.diap.integration;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mikh.diap.adapter.persistence.jpa.ApplicationJpaRepository;
 import com.mikh.diap.adapter.rest.dto.CreateApplicationRequestDto;
 import com.mikh.diap.adapter.rest.dto.UpdateApplicationRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ class IntegrationAbstractTest {
     protected ObjectMapper objectMapper;
     private static final String API = "/api/v1/application";
     public static PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer("postgres:15-alpine");
+
+    @Autowired
+    protected ApplicationJpaRepository repository;
 
     @DynamicPropertySource
     static void properties(DynamicPropertyRegistry registry) {
@@ -98,5 +102,12 @@ class IntegrationAbstractTest {
                         .content(objectMapper.writeValueAsString(requestBody)))
                 .andDo(print())
                 .andExpect(resultMatcher);
+    }
+
+    protected void performToggleJob() throws Exception {
+        mockMvc.perform(post("/api/v1/job")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 }

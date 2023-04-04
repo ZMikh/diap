@@ -19,6 +19,7 @@ public interface ApplicationMapper {
     ApplicationResponseDto toApplicationDto(HuntingApplication application);
 
     @Mapping(target = "applicationState", constant = "CREATED")
+    @Mapping(target = "creationDate", expression = "java(LocalDate.now())")
     HuntingApplication toApplication(CreateApplicationRequestDto dto) throws ApplicationInformationException;
 
     CreateApplicationResponseDto toCreateResponseDto(HuntingApplication application);

@@ -15,6 +15,7 @@ import java.time.LocalDate;
  * @param huntingLicenseNumber      Номер охотбилета
  * @param applicationState          Статус рассмотрения заявки
  * @param count                     Количество запрашиваемого ресурса
+ * @param creationDate              Дата подачи заявки
  * @param resource                  Ресурс
  */
 public record ApplicationResponseDto(
@@ -28,6 +29,7 @@ public record ApplicationResponseDto(
         Long huntingLicenseNumber,
         String applicationState,
         Integer count,
+        LocalDate creationDate,
         ResourceDto resource
 ) {
 }

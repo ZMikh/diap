@@ -9,6 +9,7 @@ CREATE TABLE application (
     license_number         BIGINT NOT NULL,
     state                  TEXT NOT NULL,
     resource_count         INT NOT NULL CHECK(resource_count >= 0),
+    creation_date          DATE NOT NULL DEFAULT CURRENT_DATE,
     resource_id            BIGINT NOT NULL,
 
     CONSTRAINT fk_resource_application FOREIGN KEY (resource_id) REFERENCES resource (id) ON DELETE CASCADE

@@ -77,6 +77,15 @@ public class HuntingApplication {
      */
     @ManyToOne(fetch = FetchType.LAZY)
     private HuntingResource resource;
+    /**
+     * Дата подачи заявки
+     */
+    @Column(name = "creation_date", nullable = false)
+    private LocalDate creationDate;
+
+    public void setCreationDate() {
+        this.creationDate = LocalDate.now();
+    }
 
     public void setLastname(String lastname) throws ApplicationInformationException {
         if (StringUtils.isBlank(lastname)) {

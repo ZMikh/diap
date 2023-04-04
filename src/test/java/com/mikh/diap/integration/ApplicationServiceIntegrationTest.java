@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ApplicationServiceIntegrationTest extends IntegrationAbstractTest {
     private CreateApplicationRequestDto createRequestDto;
     private CreateApplicationResponseDto createResponseDto;
-    private final TypeReference<List<ApplicationResponseDto>> listTypeReference = new TypeReference<List<ApplicationResponseDto>>() {
+    private final TypeReference<List<ApplicationResponseDto>> listTypeReference = new TypeReference<>() {
     };
 
     @BeforeEach
@@ -105,5 +105,21 @@ public class ApplicationServiceIntegrationTest extends IntegrationAbstractTest {
 
         // assertions
         assertThat(resultActions.andReturn().getResponse().getContentAsString()).isEqualTo("Fill in all the required fields");
+    }
+
+    @Test
+    void couldStartApplicationApproval() throws Exception {
+        assertThat(repository.findById(1L).orElseThrow().getApplicationState()).isEqualTo(ApplicationState.CREATED);
+        assertThat(repository.findById(61L).orElseThrow().getApplicationState()).isEqualTo(ApplicationState.CREATED);
+
+        performToggleJob();
+
+        Thread.sleep(5000);
+        ApplicationResponseDto responseDto = performGetApplicationById(createResponseDto.id(), ApplicationResponseDto.class);
+
+        // assertions
+        assertThat(responseDto.applicationState()).isNotEqualTo(ApplicationState.CREATED.toString());
+        assertThat(repository.findById(1L).orElseThrow().getApplicationState()).isEqualTo(ApplicationState.APPROVED);
+        assertThat(repository.findById(61L).orElseThrow().getApplicationState()).isEqualTo(ApplicationState.REJECTED);
     }
 }
