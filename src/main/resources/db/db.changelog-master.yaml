@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: mikh
+      changes:
+        - sqlFile:
+            encoding: utf8
+            stripComments: true
+            path: /db/ddl/001_create_table_resource.sql
+        - sqlFile:
+            encoding: utf8
+            stripComments: true
+            path: /db/ddl/002_create_table_application.sql
+        - sqlFile:
+            encoding: utf8
+            stripComments: true
+            path: /db/ddl/003_insert_into_table_resource.sql
+        - sqlFile:
+            encoding: utf8
+            stripComments: true
+            path: /db/ddl/004_insert_into_table_application.sql
